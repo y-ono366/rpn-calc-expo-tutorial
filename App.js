@@ -22,11 +22,21 @@ export default class App extends React.Component {
         </View>
 
         <View style={styles.buttons}>
-          <View styles={styles.buttonLists}>
+          <View style={styles.buttonsLine}>
           </View>
-          <View styles={styles.buttonLists}>
+          <View style={styles.buttonsLine}>
           </View>
-          <View styles={styles.buttonLists}>
+          <View style={styles.buttonsLine}>
+          </View>
+          <View style={styles.lastButtonLinesContainer}>
+            <View style={styles.twoButtonLines}>
+              <View style={styles.buttonsLine}>
+              </View>
+              <View style={styles.buttonsLine}>
+              </View>
+            </View>
+            <View style={styles.enterButtonContainer}>
+            </View>
           </View>
         </View>
       </View>
@@ -42,14 +52,35 @@ const styles = StyleSheet.create({
   },
   results: {
     flex: 3,
-    backgroundColor: '#FFF',
+    backgroundColor: '#fff',
   },
   resultLine: {
     flex: 1,
-    borderBottomWidth:1,
+    borderBottomWidth: 1,
     justifyContent: 'center',
     alignItems: 'flex-end',
   },
   buttons: {
+    flex: 5,
+  },
+  buttonsLine: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    borderWidth: 1,
+  },
+  lastButtonLinesContainer: {
+    flex: 2,
+    flexDirection: 'row',
+  },
+  twoButtonLines: {
+    flex: 3,
+  },
+  enterButtonContainer: {
+    flex: 1,
+    alignItems: 'center',
+    borderWidth: 1,
   }
 });
