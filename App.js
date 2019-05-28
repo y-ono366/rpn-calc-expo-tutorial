@@ -145,13 +145,15 @@ export default class App extends React.Component {
         newDotInputed = true
       }
     } else if (currentString == "0") {
+      currentString = value
+    } else {
       currentString = currentString + value
     }
     this.setState({current:currentString,dotInputed:newDotInputed,afterValueButton:true})
   }
 
   enterButton = () => {
-    let newValue = Nan
+    let newValue = NaN
     if (this.state.dotInputed) {
       newValue = parseFloat(this.state.current)
     } else {
