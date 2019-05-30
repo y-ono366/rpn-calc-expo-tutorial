@@ -261,7 +261,6 @@ export default class App extends React.Component {
     if (this.state.orientation == 'landscape') {
       resultFlex = 1
     }
-    console.log(resultFlex)
     return (
       <View style={styles.container}>
         <View style={[styles.results,{flex: resultFlex}]}>
