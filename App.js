@@ -6,6 +6,7 @@ import {
   Text,
   StatusBar,
   TouchableOpacity,
+  Dimensions,
 } from 'react-native';
 
 const STATUSBAR_HEIGHT = Platform.OS == 'ios' ? 20 : StatusBar.currentHeight;
@@ -40,13 +41,50 @@ const CalcButtons = (props) => {
 export default class App extends React.Component {
   constructor(props) {
     super(props)
+    const {height,width} = Dimensions.get('window')
     this.state = {
       results: [],
       current: "0",
       dotInputed: false,
       afterValueButton: false,
+      orientation: this.getOrientation(height,width),
     }
   }
+
+  getOrientation = (height,width) => {
+    if (height > width) {
+      return 'portrait'
+    }
+    return 'landscape'
+  }
+
+  changeOrientation = ({window}) => {
+    const orientation = this.getOrientation(window.height,window.width)
+    this.setState({orientation:orientation})
+  }
+
+  componentDidMount() {
+    Dimensions.addEventListener('change',this.changeOrientation)
+  }
+
+  componentWillUnmount() {
+    Dimensions.removeEventListener('change',this.changeOrientation)
+  }
+
+  showValue = (index) => {
+    if (this.state.afterValueButton || this.state.results.length == 0) {
+      index = index - 1
+    }
+
+    if (index == -1) {
+      return this.state.current
+    }
+
+    if (this.state.results.length > index ) {
+      return this.state.results[this.state.results.length - 1 - index]
+    }
+  }
+
   buttons = [
     [
       {
@@ -219,17 +257,21 @@ export default class App extends React.Component {
   }
 
   render() {
+    let resultFlex = 3
+    if (this.state.orientation == 'landscape') {
+      resultFlex = 1
+    }
+    console.log(resultFlex)
     return (
       <View style={styles.container}>
-        <View style={styles.results}>
-          <View style={styles.resultLine}>
-          </View>
-          <View style={styles.resultLine}>
-            <Text>{this.state.current}</Text>
-          </View>
-          <View style={styles.resultLine}>
-            <Text>{this.state.results.join(' ')}</Text>
-          </View>
+        <View style={[styles.results,{flex: resultFlex}]}>
+          {[...Array(resultFlex).keys()].reverse().map(index => {
+            return (
+              <View style={styles.resultLine} key={"result_" + index}>
+                <Text>{this.showValue(index)}</Text>
+              </View>
+            )
+          })}
         </View>
 
         <View style={styles.buttons}>
@@ -276,6 +318,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     justifyContent: 'center',
     alignItems: 'flex-end',
+    paddingRight: 20,
   },
   buttons: {
     flex: 5,
@@ -311,5 +354,5 @@ const styles = StyleSheet.create({
   },
   calcButtonText: {
     fontSize: 20,
-  }
+  },
 });
